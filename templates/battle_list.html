@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+<!--DOCTYPE html -->
+{% block head_title %}
+Battles List | {{ block.super }}
+{% endblock head_title %}
+
+{% block content %}
+  <br /><br />
+  <b>Battles Listing</b>
+  <br /><br />
+  <table class="table table-hover table-bordered" width="95%">
+    <tr>
+      <td colspan="8" align="right">
+        <a href='{% url "battles:create" %}'
+        title='Create New Battle'>Create New Battle</a>&nbsp;|&nbsp;
+        <a href='{% url "battles:start_crawling" %}'
+        title='Create New Battle'>Start Crawler</a>&nbsp;|&nbsp;
+        <a href='{% url "battles:stop_crawling" %}'
+        title='Create New Battle'>Stop Crawler</a>
+      </td>
+    </tr>
+    <tr>
+       <th>#</th>
+       <th>Name</th>
+       <th>Tag1</th>
+       <th>Tag2</th>
+       <th>Start</th>
+       <th>End</th>
+       <th>Status (R / D)</th>
+       <th>Actions</th>
+     </tr>
+     {% if battles %}
+      {% for battle in battles %}
+      <tr>
+       <td>{{ battle.battle_id }}</td>
+       <td>
+          <a href='{% url "battles:detail" id=battle.battle_id %}'
+            title='Click for details'>{{ battle.battle_name }}</a>
+       </td>
+       <td>{{ battle.hashtag1 }}</td>
+       <td>{{ battle.hashtag2 }}</td>
+       <td>{{ battle.battle_start }}</td>
+       <td>{{ battle.battle_end }}</td>
+       <td>
+         {% if battle.crawl_status == 'D' %}Done{% else %}Running{% endif %}
+       </td>
+       <td>
+          <a href='{% url "battles:update" id=battle.battle_id %}'
+            title='Edit'>Edit</a>&nbsp;|&nbsp;
+          <a href='{% url "battles:delete" id=battle.battle_id %}'
+            title='Delete'>Delete</a>&nbsp;|&nbsp;<br/>
+          <a href='
+            {% url "battles:update_status" id=battle.battle_id status=battle.crawl_status %}'
+            title='Click to Update Crawl Status'>Update&nbsp;Status</a>&nbsp;|&nbsp;
+          <br/>
+          <a href='{% url "battles:detail" id=battle.battle_id %}'
+            title='Click for result'>Battle&nbsp;Result</a>&nbsp;|&nbsp;<br />
+          <a href='{% url "battles:result" id=battle.battle_id %}'
+            title='Crawl Me'>Crawl&nbsp;Stats</a>
+       </td>
+       </tr>
+      {% endfor %}
+     {% else %}
+      <tr>
+        <td colspan="8">No Records Found. </td>
+      </tr>
+     {% endif %}
+      <tr>
+         <td colspan="8">
+             <div class="pagination">
+               <span class="step-links">
+                 {% if battles.has_previous %}
+                   <a href="?page={{ battles.previous_page_number }}">previous</a>
+                 {% endif %}
+               <span class="current">
+                 Page {{ battles.number }} of {{ battles.paginator.num_pages }}.
+               </span>
+                 {% if battles.has_next %}
+                   <a href="?page={{ battles.next_page_number }}">next</a>
+                 {% endif %}
+              </span>
+            </div>
+         </td>
+      </tr>
+    </table>
+{% endblock content %}

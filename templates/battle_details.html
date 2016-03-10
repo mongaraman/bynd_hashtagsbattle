@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+<!--DOCTYPE html -->
+{% block head_title %}
+Battle Details - {{ battle.battle_name }} | {{ block.super }}
+{% endblock head_title %}
+
+<style>
+  {% block style %}
+    h1 = { color: #777777;}
+  {% endblock style %}
+</style>
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3">
+  <h1> {{ battle.battle_name }} <small>{{ battle.timestamp }}</small> </h1>
+  Battle ID = {{ battle.battle_id }}<br />
+  Battle Name = {{ battle.battle_name }}<br />
+  Hash Tag1 = {{ battle.hashtag1 }}<br />
+  Hash Tag2 = {{ battle.hashtag2 }}<br />
+  Crawling Status = {{ battle.crawl_status }}<br />
+  Tag1 # of Tweets = {{ battle.tag1_num_tweets|default:0 }}<br />
+  Tag2 # of Tweets = {{ battle.tag2_num_tweets|default:0 }}<br />
+  Tag1 # of Spell Erros = {{ battle.tag1_num_spell_errors|default:0 }}<br />
+  Tag2 # of Spell Errors = {{ battle.tag2_num_spell_errors|default:0 }}<br />
+  <span class='messages'># of Tweet Basis Winner = {{ battle.num_tweet_winner|default:"" }}<br />
+  # of Spell Basis Winner = {{ battle.num_spell_winner|default:"" }}<br /></span>
+  Start At = {{ battle.battle_start }}<br />
+  End At = {{ battle.battle_end }}<br />
+  <a href='{% url "battles:list" %}' title='Listing page'>Return To Listing</a>
+</div>
+
+{% endblock content %}
+
+
